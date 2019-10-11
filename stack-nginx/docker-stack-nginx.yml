@@ -31,11 +31,11 @@ services:
     networks:
       - nginx
     volumes:
-      - ./data/confd:/etc/nginx/conf.d
-      - ./data/vhostd:/etc/nginx/vhost.d
-      - ./data/html:/usr/share/nginx/html
-      - ./data/certs:/etc/nginx/certs:ro
-      - ./data/htpasswd:/etc/nginx/htpasswd:ro
+      - nginx-conf.d:/etc/nginx/conf.d
+      - nginx-vhost.d:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - nginx-certs:/etc/nginx/certs:ro
+      - nginx-htpasswd:/etc/nginx/htpasswd:ro
       - ./nginx.conf:/etc/nginx/nginx.conf
 
   nginx-gen:
@@ -51,11 +51,14 @@ services:
     networks:
       - nginx
     volumes:
-      - ./data/confd:/etc/nginx/conf.d
-      - ./data/vhostd:/etc/nginx/vhost.d
-      - ./data/html:/usr/share/nginx/html
-      - ./data/certs:/etc/nginx/certs:ro
-      - ./data/htpasswd:/etc/nginx/htpasswd:ro
+      - type: bind
+        source: ./conf.d
+        target: /tmp/data
+      - nginx-conf.d:/etc/nginx/conf.d
+      - nginx-vhost.d:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - nginx-certs:/etc/nginx/certs:ro
+      - nginx-htpasswd:/etc/nginx/htpasswd:ro
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
@@ -67,15 +70,30 @@ services:
       mode: global
       placement:
         constraints: [node.role == manager]
+    environment:
+      - DEBUG=true
     networks:
       - nginx
     volumes:
-      - ./data/confd:/etc/nginx/conf.d
-      - ./data/vhostd:/etc/nginx/vhost.d
-      - ./data/html:/usr/share/nginx/html
-      - ./data/certs:/etc/nginx/certs:rw
+      - nginx-conf.d:/etc/nginx/conf.d
+      - nginx-vhost.d:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - nginx-certs:/etc/nginx/certs:rw
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+  nginx-conf.d:
+    external: true
+  nginx-vhost.d:
+    external: true
+  nginx-html:
+    external: true
+  nginx-certs:
+    external: true
+  nginx-htpasswd:
+    external: true
+
 
 
 networks:
