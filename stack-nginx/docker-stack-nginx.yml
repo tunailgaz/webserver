@@ -9,6 +9,7 @@ x-default-opts:
 
 services:
   nginx:
+    <<: *default-opts
     image: nginx
     #container_name: nginx
     labels:
@@ -27,15 +28,14 @@ services:
       mode: global  # Either global (exactly one container per swarm node) or replicated (a specified number of containers). The default is replicated
       placement:
         constraints: [node.role == manager]
-
     networks:
       - nginx
     volumes:
-      - ./nginx-volume/data/conf.d:/etc/nginx/conf.d
-      - ./nginx-volume/data:/etc/nginx/vhost.d
-      - ./nginx-volume/data/html:/usr/share/nginx/html
-      - ./nginx-volume/data/certs:/etc/nginx/certs:ro
-      - ./nginx-volume/data/htpasswd:/etc/nginx/htpasswd:ro
+      - ./data/confd:/etc/nginx/conf.d
+      - ./data/vhostd:/etc/nginx/vhost.d
+      - ./data/html:/usr/share/nginx/html
+      - ./data/certs:/etc/nginx/certs:ro
+      - ./data/htpasswd:/etc/nginx/htpasswd:ro
       - ./nginx.conf:/etc/nginx/nginx.conf
 
   nginx-gen:
@@ -51,11 +51,11 @@ services:
     networks:
       - nginx
     volumes:
-      - ./nginx-volume/data/conf.d:/etc/nginx/conf.d
-      - ./nginx-volume/data:/etc/nginx/vhost.d
-      - ./nginx-volume/data/html:/usr/share/nginx/html
-      - ./nginx-volume/data/certs:/etc/nginx/certs:ro
-      - ./nginx-volume/data/htpasswd:/etc/nginx/htpasswd:ro
+      - ./data/confd:/etc/nginx/conf.d
+      - ./data/vhostd:/etc/nginx/vhost.d
+      - ./data/html:/usr/share/nginx/html
+      - ./data/certs:/etc/nginx/certs:ro
+      - ./data/htpasswd:/etc/nginx/htpasswd:ro
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
@@ -70,14 +70,12 @@ services:
     networks:
       - nginx
     volumes:
-      - ./nginx-volume/data/conf.d:/etc/nginx/conf.d
-      - ./nginx-volume/data:/etc/nginx/vhost.d
-      - ./nginx-volume/data/html:/usr/share/nginx/html
-      - ./nginx-volume/data/certs:/etc/nginx/certs:rw
+      - ./data/confd:/etc/nginx/conf.d
+      - ./data/vhostd:/etc/nginx/vhost.d
+      - ./data/html:/usr/share/nginx/html
+      - ./data/certs:/etc/nginx/certs:rw
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-volumes:
 
 
 networks:
