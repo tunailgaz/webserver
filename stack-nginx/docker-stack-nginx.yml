@@ -51,7 +51,7 @@ services:
     networks:
       - nginx
     volumes:
-      - type: volume
+      - type: bind
         source: ./conf.d
         target: /tmp
       - nginx-conf.d:/etc/nginx/conf.d
