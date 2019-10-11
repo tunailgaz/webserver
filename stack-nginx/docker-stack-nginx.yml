@@ -67,8 +67,8 @@ services:
       mode: global
       placement:
         constraints: [node.role == manager]
-    environment:
-      - DEBUG=true
+    #environment:
+    #  - DEBUG=true
     networks:
       - nginx
     volumes:
