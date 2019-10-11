@@ -52,7 +52,9 @@ services:
       - nginx
     volumes:
       - type: bind
-        source: ./conf.d
+        bind:
+          propagation: shared
+        source: ./data
         target: /tmp
       - nginx-conf.d:/etc/nginx/conf.d
       - nginx-vhost.d:/etc/nginx/vhost.d
