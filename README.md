@@ -22,3 +22,24 @@ to mannually restart nginx container
 to test nginx configuration 
        
        - docker container exec (nginx container id) nginx -t  
+
+if you want to edit use custom nginx configurations you need to put a conf file into `nginx-vhost.d` volume which is external. 
+
+
+
+### serving static files
+if you want to serve static files from nginx
+for example you have 'www.example.com' domain, and you run your web-app container with `- VIRTUAL_HOST=www.example.com`
+ 
+create a file named `www.example.com.conf` (this should match with `VIRTUAL_HOST`) and put it into `nginx-vhost.d` volume
+
+check ./examples/vhost.d folder for example custom settings 
+
+in your `www.example.com.conf` file define how can nginx container access those static files `root /usr/share/nginx/html/www.example.com/static;`
+finally put your static folder into `nginx-html` volume
+
+
+yes a bit dirty and hacky but makes the job done. 
+how about dynamic files?, you can create your own script that copies dynamic files into nginx shared folder same concept.
+ 
+
