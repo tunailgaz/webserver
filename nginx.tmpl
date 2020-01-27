@@ -254,6 +254,10 @@ server {
 
 server {
 	server_name {{ $host }};
+
+    # Enable QUIC and HTTP/3.
+    listen 443 quic reuseport;
+
 	listen 443 ssl http2 {{ $default_server }};
 	{{ if $enable_ipv6 }}
 	listen [::]:443 ssl http2 {{ $default_server }};
@@ -287,6 +291,9 @@ server {
 	{{ if (not (or (eq $https_method "noredirect") (eq $hsts "off"))) }}
 	add_header Strict-Transport-Security "{{ trim $hsts }}" always;
 	{{ end }}
+
+    # Add Alt-Svc header to negotiate HTTP/3.
+    add_header alt-svc 'h3-23=":443"; ma=86400';
 
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
 	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
