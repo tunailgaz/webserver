@@ -256,11 +256,11 @@ server {
 	server_name {{ $host }};
 
     # Enable QUIC and HTTP/3. # test
-    listen 443 quic reuseport;
+    listen 443 quic reuseport {{ $default_server }};
 
-	listen 443 ssl http2; #{{ $default_server }};
+	listen 443 ssl http2 {{ $default_server }};
 	{{ if $enable_ipv6 }}
-	#listen [::]:443 ssl http2 {{ $default_server }};
+	listen [::]:443 ssl http2 {{ $default_server }};
 	{{ end }}
 	access_log /var/log/nginx/access.log vhost;
 
