@@ -10,7 +10,7 @@ x-default-opts:
 services:
   nginx:
     <<: *default-opts
-    image: nwtgck/nginx-http3
+    image: nginx
     #container_name: nginx
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true
