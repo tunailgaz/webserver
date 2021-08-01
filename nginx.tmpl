@@ -194,7 +194,7 @@ upstream {{ $upstream_name }} {
 				{{ end }}
 			{{ else }}
 				# Cannot connect to network of this container
-				server 127.0.0.1 down;
+				#server 127.0.0.1 down;
 			{{ end }}
 		{{ end }}
 	{{ end }}
