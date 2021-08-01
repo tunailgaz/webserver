@@ -91,6 +91,8 @@ volumes:
     external: true
   nginx-htpasswd:
     external: true
+  acme:
+    external: true
 
 
 
