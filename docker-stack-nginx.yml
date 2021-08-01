@@ -60,9 +60,9 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
 
-  nginx-letsencrypt:
+  acme-companion:
     <<: *default-opts
-    image:  jrcs/letsencrypt-nginx-proxy-companion
+    image: nginxproxy/acme-companion
     deploy:
       mode: global
       placement:
@@ -76,6 +76,7 @@ services:
       - nginx-vhost.d:/etc/nginx/vhost.d
       - nginx-html:/usr/share/nginx/html
       - nginx-certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
