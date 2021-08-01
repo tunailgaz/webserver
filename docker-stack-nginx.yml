@@ -67,8 +67,8 @@ services:
       mode: global
       placement:
         constraints: [node.role == manager]
-    #environment:
-    #  - DEBUG=true
+    environment:
+      - DEFAULT_EMAIL=tunailgaz@gmail.com
     networks:
       - nginx
     volumes:
